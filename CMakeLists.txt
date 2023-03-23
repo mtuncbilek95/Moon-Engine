@@ -1,5 +1,4 @@
 ﻿cmake_minimum_required (VERSION 3.20)
 
-project ("Moon-Engine")
-
+add_subdirectory ("Libs/Stbi")
 add_subdirectory ("Moon")

@@ -1,8 +1,10 @@
 #include "RenderDevice.h"
-#include "Log/Log.h"
 
-namespace Moon {
+#include <Moon/Log/Log.h>
+#include <Moon/FileSystem/FileSystem.h>
 
+namespace Moon
+{
 	RenderDevice* RenderDevice::m_RenderDevice = nullptr;
 
 	RenderDevice& RenderDevice::GetInstance()
@@ -152,12 +154,50 @@ namespace Moon {
 	{
 		ComPtr<ID3DBlob> ErrorBlob;
 
-		return false;
+		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders/PixelShader.hlsl");
+
+		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &Blob, &ErrorBlob);
+		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
+		{
+			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
+		}
+
+		HRESULT hr = m_Device->CreatePixelShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &m_PixelShader);
+
+		if (FAILED(hr))
+		{
+			Log::ConsoleLog(LogType::Error, "Failed to create pixel shader.");
+			return false;
+		}
+
+		m_Context->PSSetShader(m_PixelShader.Get(), nullptr, 0u);
+		Log::ConsoleLog(LogType::Success, "Pixel Shader has been successfully created.");
+		return true;
 	}
 
 	bool RenderDevice::CreateVertexShader(ComPtr<ID3DBlob>& Blob)
 	{
 		ComPtr<ID3DBlob> ErrorBlob;
+
+		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders/VertexShader.hlsl");
+
+		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &Blob, &ErrorBlob);
+		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
+		{
+			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
+		}
+
+		HRESULT hr = m_Device->CreateVertexShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &m_VertexShader);
+
+		if (FAILED(hr))
+		{
+			Log::ConsoleLog(LogType::Error, "Failed to create vertex shader.");
+			return false;
+		}
+
+		m_Context->VSSetShader(m_VertexShader.Get(), nullptr, 0u);
+		Log::ConsoleLog(LogType::Success, "Pixel Shader has been successfully created.");
+		return true;
 
 		return false;
 	}
@@ -172,7 +212,8 @@ namespace Moon {
 		};
 
 		hr = m_Device->CreateInputLayout(inputElementDesc, static_cast<uint32>(std::size(inputElementDesc)), Blob->GetBufferPointer(), Blob->GetBufferSize(), &m_InputLayout);
-		if (FAILED(hr)) {
+		if (FAILED(hr))
+		{
 			Log::ConsoleLog(LogType::Error, "Failed to create Input Layout");
 			return false;
 		}
@@ -185,7 +226,7 @@ namespace Moon {
 
 	bool RenderDevice::CreateViewport(XMINT2 p_WindowSize)
 	{
-		D3D11_VIEWPORT m_Viewport;
+		D3D11_VIEWPORT m_Viewport{};
 
 		if (p_WindowSize.x < 640 || p_WindowSize.y < 480)
 		{
@@ -206,5 +247,4 @@ namespace Moon {
 
 		return true;
 	}
-
 }

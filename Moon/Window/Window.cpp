@@ -1,23 +1,26 @@
 #include "Window.h"
 
-#include <Resources/Resource.h>
-#include <Log/Log.h>
+#include <Moon/Resources/Resource.h>
+#include <Moon/Log/Log.h>
 
-namespace Moon {
+namespace Moon
+{
 	Window::Window(int width, int height) : m_WindowSize({ width,height }), m_HandleInstance(GetModuleHandle(nullptr)), m_WindowHandle(nullptr),
 		b_IsRunning(false), m_ClassName("WindowClass"), m_WindowName("Kings and Pigs")
 	{
 		Log::ConsoleLog(LogType::Display, "********** Window Device **********");
 	}
 
-	Window::~Window() {
+	Window::~Window()
+	{
 		UnregisterClass(m_ClassName.c_str(), m_HandleInstance);
 		DestroyWindow(m_WindowHandle);
 		m_HandleInstance = 0;
 		m_WindowHandle = 0;
 	}
 
-	void Window::InitializeWindow() {
+	void Window::InitializeWindow()
+	{
 
 		WNDCLASSEX windowClass{};
 		windowClass.cbSize = sizeof(windowClass);
@@ -47,11 +50,11 @@ namespace Moon {
 		{
 			Log::ConsoleLog(LogType::Success, "Window has been successfully created.");
 			ShowWindow(m_WindowHandle, SW_SHOW);
-		#ifdef MOON_DEBUG
+#ifdef MOON_DEBUG
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
-		#else
+#else
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
-		#endif
+#endif
 		}
 	}
 
@@ -70,19 +73,23 @@ namespace Moon {
 			return false;
 	}
 
-	void Window::SetIsRunning(bool p_IsRunning) {
+	void Window::SetIsRunning(bool p_IsRunning)
+	{
 		b_IsRunning = p_IsRunning;
 	}
 
-	bool Window::GetIsRunning() {
+	bool Window::GetIsRunning()
+	{
 		return b_IsRunning;
 	}
 
-	XMINT2 Window::GetWindowSize() {
+	XMINT2 Window::GetWindowSize()
+	{
 		return m_WindowSize;
 	}
 
-	HWND Window::GetWindowHandler() {
+	HWND Window::GetWindowHandler()
+	{
 		return m_WindowHandle;
 	}
 

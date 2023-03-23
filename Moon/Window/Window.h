@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Core/MoonCore.h>
-#include <Window/WindowCore.h>
+#include <Moon/Core/MoonCore.h>
+#include <Moon/Window/WindowCore.h>
 
-namespace Moon {
-
-	class Window {
+namespace Moon
+{
+	class Window
+	{
 	public:
-
-		Window(int width, int height);
+		Window(int p_Width, int p_Height);
 
 		Window(const Window&) = delete;
 		Window& operator= (const Window&) = delete;
@@ -17,13 +17,15 @@ namespace Moon {
 		void InitializeWindow();
 		bool ProcessMessage();
 
-		void SetIsRunning(bool bValue);
+		void SetIsRunning(bool p_IsRunning);
 		bool GetIsRunning();
 
 		XMINT2 GetWindowSize();
 		HWND GetWindowHandler();
+
 	protected:
 		static LRESULT APIENTRY WindowProc(HWND p_WindowHandle, UINT message, WPARAM wParam, LPARAM lParam);
+
 	private:
 		HINSTANCE m_HandleInstance;
 		HWND m_WindowHandle;
@@ -34,6 +36,5 @@ namespace Moon {
 		const string m_WindowName;
 
 		bool b_IsRunning;
-
 	};
 }

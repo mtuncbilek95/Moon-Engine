@@ -1,28 +1,36 @@
 #include "FileSystem.h"
 
-#include <fileapi.h>
+#include <Moon/Window/WindowCore.h>
 
-namespace Moon {
-
+namespace Moon
+{
 	FileSystem* FileSystem::m_FileSystem = nullptr;
 
-	FileSystem& FileSystem::GetInstance() {
+	FileSystem& FileSystem::GetInstance()
+	{
 		if (m_FileSystem == nullptr)
 			m_FileSystem = new FileSystem();
 		return *m_FileSystem;
 	}
 
-	void FileSystem::SetProjectTarget(string p_TargetDir) {
-		m_TargetDir = p_TargetDir;
+	void FileSystem::SetProjectTarget(string p_TargetDir)
+	{
+		m_GameTargetDir = p_TargetDir;
 	}
 
-	string FileSystem::GetCurrentDir() {
-		return m_TargetDir;
+	void FileSystem::SetEngineSourceTarget(string p_TargetDir)
+	{
+
+	}
+
+	string FileSystem::GetGameDir()
+	{
+		return m_GameTargetDir;
 	}
 
 	string FileSystem::GetData(string p_PathName)
 	{
-		string fullPath = GetCurrentDir() + p_PathName;
+		string fullPath = GetGameDir() + p_PathName;
 
 		HANDLE fileHandle;
 
