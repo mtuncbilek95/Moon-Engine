@@ -140,7 +140,6 @@ namespace Moon
 		}
 
 		Log::ConsoleLog(LogType::Success, "Blend State has been created successfully.");
-
 		return true;
 	}
 }
