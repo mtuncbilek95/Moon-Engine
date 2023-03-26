@@ -4,10 +4,15 @@
 
 namespace Moon
 {
-	class GameTimer
+	class Timer
 	{
 	public:
-		GameTimer();
+		static Timer& GetInstance()
+		{
+			if (m_Timer == nullptr)
+				m_Timer = new Timer();
+			return *m_Timer;
+		}
 
 		float TotalTime() const;
 		float DeltaTime() const;
@@ -18,6 +23,8 @@ namespace Moon
 		void Tick();
 
 	private:
+		Timer();
+
 		double m_SecondsPerCount;
 		double m_DeltaTime;
 
@@ -28,5 +35,8 @@ namespace Moon
 		unsigned long long m_CurrTime;
 
 		bool m_Stopped;
+
+	private:
+		static Timer* m_Timer;
 	};
 }

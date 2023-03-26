@@ -17,7 +17,7 @@ add_library (${PROJECT_NAME} "main.cpp"
 "Window/Window.h" "Window/WindowCore.h" "Window/Window.cpp" 
 "Resources/Resource.h" 
 "Assets/ConstantBufferTypes.h" 
-"Timer/Timer.h" "Timer/Timer.cpp" "Assets/TextureObject.h" "Assets/TextureObject.cpp" "Assets/SpriteObject.h" "Assets/SpriteObject.cpp" "EntityComponent/Entity.h" "EntityComponent/EntityCore.h")
+"Timer/Timer.h" "Timer/Timer.cpp" "Assets/TextureObject.h" "Assets/TextureObject.cpp" "Assets/SpriteObject.h" "Assets/SpriteObject.cpp" "EntityComponent/Entity.h" "EntityComponent/EntityCore.h" "EntityComponent/Components/SpriteAnimation.h" "EntityComponent/Components/Transform.h" "EntityComponent/Components/SpriteRenderer.h" "EntityComponent/Components/BoxCollision2D.h" "EntityComponent/Component.h" "Assets/AnimationClipObject.h")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}")
 

@@ -67,5 +67,5 @@ private:
 
 private:
 	std::bitset<32> m_ComponentBitset;
-	ComponentArray m_ComponentList{};
+	std::array<Component*, 32> m_ComponentList{};
 };

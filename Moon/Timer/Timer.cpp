@@ -4,7 +4,9 @@
 
 namespace Moon
 {
-	GameTimer::GameTimer()
+	Timer* Timer::m_Timer = nullptr;
+
+	Timer::Timer()
 		: m_SecondsPerCount(0.0), m_DeltaTime(-1.0), m_StopTime(0), m_BaseTime(0),
 		m_PausedTime(0), m_PrevTime(0), m_CurrTime(0), m_Stopped(false)
 	{
@@ -13,7 +15,7 @@ namespace Moon
 		m_SecondsPerCount = 1.0 / (double)countsPerSec;
 	}
 
-	float GameTimer::TotalTime()const
+	float Timer::TotalTime()const
 	{
 		if (m_Stopped)
 		{
@@ -26,12 +28,12 @@ namespace Moon
 		}
 	}
 
-	float GameTimer::DeltaTime()const
+	float Timer::DeltaTime()const
 	{
 		return (float)m_DeltaTime;
 	}
 
-	void GameTimer::Reset()
+	void Timer::Reset()
 	{
 		unsigned long long currTime{};
 		QueryPerformanceCounter((LARGE_INTEGER*)&currTime);
@@ -42,7 +44,7 @@ namespace Moon
 		m_Stopped = false;
 	}
 
-	void GameTimer::Start()
+	void Timer::Start()
 	{
 		unsigned long long startTime{};
 		QueryPerformanceCounter((LARGE_INTEGER*)&startTime);
@@ -57,7 +59,7 @@ namespace Moon
 		}
 	}
 
-	void GameTimer::Stop()
+	void Timer::Stop()
 	{
 		if (!m_Stopped)
 		{
@@ -69,7 +71,7 @@ namespace Moon
 		}
 	}
 
-	void GameTimer::Tick()
+	void Timer::Tick()
 	{
 		if (m_Stopped)
 		{

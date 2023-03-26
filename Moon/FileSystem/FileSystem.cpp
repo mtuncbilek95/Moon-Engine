@@ -18,11 +18,6 @@ namespace Moon
 		m_GameTargetDir = p_TargetDir;
 	}
 
-	void FileSystem::SetEngineSourceTarget(string p_TargetDir)
-	{
-
-	}
-
 	string FileSystem::GetGameDir()
 	{
 		return m_GameTargetDir;
