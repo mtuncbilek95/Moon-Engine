@@ -18,6 +18,9 @@ namespace Moon
 		void Render();
 		void Refresh();
 
+	public:
+		ComPtr<ID3D11DeviceContext> GetContext() { return m_Context; }
+
 	protected:
 		bool CreateDeviceContext();
 		bool CreateSwapchain(const HWND p_Handle);

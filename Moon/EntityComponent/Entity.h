@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Core/MoonCore.h>
-#include <EntityComponent/EntityCore.h>
+#include <Moon/Core/MoonCore.h>
+#include <Moon/EntityComponent/EntityCore.h>
 
 class Entity
 {

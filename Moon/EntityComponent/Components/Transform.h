@@ -1,72 +1,87 @@
 #pragma once
 
-#include <EntityComponent/Component.h>
+#include <Moon/Core/MoonCore.h>
+#include <Moon/EntityComponent/Component.h>
+#include <Moon/Assets/ConstantBufferTypes.h>
 
-class Transform : public Component
+namespace Moon
 {
-public:
-	Transform(string p_ComponentName) : Component()
+	class Transform : public Component
 	{
-		m_Position = { 0.0f,0.0f };
-		m_Scale = { 1.0f,1.0f };
-		m_Rotation = 0.0f;
-		m_ComponentName = p_ComponentName;
-	}
+	public:
+		Transform(string p_ComponentName) : Component()
+		{
+			m_Position = { 0.0f,0.0f };
+			m_Scale = { 1.0f,1.0f };
+			m_Rotation = 0.0f;
+			m_ComponentName = p_ComponentName;
+		}
 
-	Transform(XMFLOAT2 position, XMFLOAT2 scale, float rotation) : Component()
-	{
-		m_Position = position;
-		m_Scale = scale;
-		m_Rotation = rotation;
-	}
+		Transform(XMFLOAT2 position, XMFLOAT2 scale, float rotation) : Component()
+		{
+			m_Position = position;
+			m_Scale = scale;
+			m_Rotation = rotation;
+		}
 
-	virtual ~Transform() override {}
+		virtual ~Transform() override {}
 
-	virtual bool Initialize() override final { return Component::Initialize(); }
-	virtual void UpdateMatrix() override final { /* Will update matrix */ }
+		virtual bool Initialize() override final
+		{
+			return Component::Initialize();
+		}
 
-	XMFLOAT2 GetPosition()
-	{
-		return m_Position;
-	}
+		virtual void Update() override final
+		{
+			
+		}
 
-	float GetRotation()
-	{
-		return m_Rotation;
-	}
+		XMFLOAT2 GetPosition()
+		{
+			return m_Position;
+		}
 
-	void SetPosition(XMFLOAT2 position)
-	{
-		m_Position = position;
-		UpdateMatrix();
-	}
+		float GetRotation()
+		{
+			return m_Rotation;
+		}
 
-	void SetRotation(float rotation)
-	{
-		m_Rotation = rotation;
-		UpdateMatrix();
-	}
+		void SetPosition(XMFLOAT2 position)
+		{
+			m_Position = position;
+			Update();
+		}
 
-	void SetScale(XMFLOAT2 scale)
-	{
-		m_Scale = scale;
-		UpdateMatrix();
-	}
+		void SetRotation(float rotation)
+		{
+			m_Rotation = rotation;
+			Update();
+		}
 
-	void Move(XMFLOAT2 offsetPosition)
-	{
-		m_Position.x += offsetPosition.x;
-		m_Position.y += offsetPosition.y;
-		UpdateMatrix();
-	}
+		void SetScale(XMFLOAT2 scale)
+		{
+			m_Scale = scale;
+			Update();
+		}
 
-	void Rotate(float offsetRotation)
-	{
-		m_Rotation += offsetRotation;
-		UpdateMatrix();
-	}
-private:
-	XMFLOAT2 m_Position{};
-	XMFLOAT2 m_Scale{};
-	float m_Rotation;
-};
+		void Move(XMFLOAT2 offsetPosition)
+		{
+			m_Position.x += offsetPosition.x;
+			m_Position.y += offsetPosition.y;
+			Update();
+		}
+
+		void Rotate(float offsetRotation)
+		{
+			m_Rotation += offsetRotation;
+			Update();
+		}
+	private:
+		XMFLOAT2 m_Position{};
+		XMFLOAT2 m_Scale{};
+		float m_Rotation;
+
+	private:
+		ModelMatrix m_ModelMatrix;
+	};
+}

@@ -7,11 +7,12 @@ namespace Moon
 {
 	class TextureObject
 	{
+		friend class SpriteObject;
 	public:
 		TextureObject();
 		~TextureObject();
 	protected:
-		void LoadTextureImage(string r_PathName);
+		void LoadTextureImage(string r_PathName, XMINT2 r_TargetSize);
 
 		bool CreateTexture();
 		bool CreateShaderResourceView();
@@ -19,6 +20,7 @@ namespace Moon
 		bool CreateBlendState();
 	private:
 		XMINT2 m_TotalSize;
+		XMINT2 m_AtlasSpriteCount;
 		const byte* m_ImageData = nullptr;
 
 	private:

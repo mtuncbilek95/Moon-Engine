@@ -4,22 +4,26 @@
 
 #include <EntityComponent/EntityCore.h>
 
-class Entity;
+namespace Moon
+{
+	class Entity;
 
-class Component {
-public:
-	Component() = default;
+	class Component
+	{
+	public:
+		Component() = default;
 
-	virtual bool Initialize() { return true; }
-	virtual void UpdateMatrix() {}
-	virtual void Render() {}
-	virtual ~Component() = default;
+		virtual bool Initialize() { return true; }
+		virtual void Update() {}
+		virtual void Render() {}
+		virtual ~Component() = default;
 
-	void SetEntity(Entity* p_Entity) { m_Entity = p_Entity; }
-	Entity* GetEntity() { return m_Entity; }
+		void SetEntity(Entity* p_Entity) { m_Entity = p_Entity; }
+		Entity* GetEntity() { return m_Entity; }
 
-private:
-	Entity* m_Entity;
+	private:
+		Entity* m_Entity;
 
-	string m_ComponentName;
-};
+		string m_ComponentName;
+	};
+}

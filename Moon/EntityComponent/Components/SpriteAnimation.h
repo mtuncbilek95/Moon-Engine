@@ -1,41 +1,53 @@
 #pragma once
 
-#include <Core/MoonCore.h>
+#include <Moon/Core/MoonCore.h>
 
-#include <EntityComponent/EntityCore.h>
-#include <EntityComponent/Component.h>
+#include <Moon/EntityComponent/EntityCore.h>
+#include <Moon/EntityComponent/Component.h>
 
-class SpriteRenderer;
+#include <Moon/Assets/AnimationClipObject.h>
 
-class SpriteAnimation : public Component
+namespace Moon
 {
-public:
-	SpriteAnimation() : Component() {}
-	~SpriteAnimation() {}
+	class SpriteRenderer;
 
-	virtual bool Initialize() override
+	class SpriteAnimation : public Component
 	{
-		return GetEntity()->HasComponent<SpriteRenderer>();
-	}
+	public:
+		SpriteAnimation() : Component() {}
+		~SpriteAnimation() {}
 
-	virtual void UpdateMatrix() override {}
+		virtual bool Initialize() override
+		{
+			return GetEntity()->HasComponent<SpriteRenderer>();
+		}
 
-	void AddClip(AnimationClip* clip)
-	{
+		virtual void Update() override {}
 
-		m_AnimClips[clip->GetName()] = clip;
-	}
+		void AddClip(AnimationClip* clip)
+		{
 
-	void RemoveClip(string clipName)
-	{
-		m_AnimClips.erase(clipName);
-	}
+			m_AnimClips[clip->GetName()] = clip;
+		}
 
-	void Play(string clipName)
-	{
+		void RemoveClip(string clipName)
+		{
+			m_AnimClips.erase(clipName);
+		}
 
-	}
+		void Play(string clipName)
+		{
+			auto& element = m_AnimClips.find(clipName);
+			AnimationClipObject* clip = element.second;
 
-private:
-	std::unordered_map<string, AnimationClip*> m_AnimClips;
-};
+			for (auto& el : clip->m_Sprites)
+			{
+
+			}
+
+		}
+
+	private:
+		std::unordered_map<string, AnimationClipObject*> m_AnimClips;
+	};
+}

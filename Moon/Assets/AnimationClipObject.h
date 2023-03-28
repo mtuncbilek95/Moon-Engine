@@ -1,17 +1,24 @@
 #pragma once
 
-#include <Core/MoonCore.h>
+#include <Moon/Core/MoonCore.h>
 
-class Sprite;
-
-class AnimationClip
+namespace Moon
 {
-public:
-	AnimationClip(string clipName, int desiredSpeed) : m_AnimationName(clipName), m_DesiredSpeed(desiredSpeed)
+	class Sprite;
+
+	class AnimationClipObject
 	{
+		friend class SpriteAnimation;
 
-	}
-private:
+	public:
+		AnimationClipObject(int desiredSpeed) : m_AnimationName(clipName), m_DesiredSpeed(desiredSpeed)
+		{
 
-	int m_DesiredSpeed;
-};
+		}
+
+	private:
+		int m_DesiredSpeed;
+
+		std::vector<Sprite*> m_Sprites;
+	};
+}

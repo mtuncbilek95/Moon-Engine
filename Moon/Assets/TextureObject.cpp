@@ -17,7 +17,7 @@ namespace Moon
 		delete m_ImageData;
 	}
 
-	void TextureObject::LoadTextureImage(string r_PathName)
+	void TextureObject::LoadTextureImage(string r_PathName, XMINT2 r_TargetSize)
 	{
 		int imageChannels{}, desiredChannels{ 4 };
 		string filePath = FileSystem::GetInstance().GetGameDir() + r_PathName;
@@ -31,6 +31,8 @@ namespace Moon
 		{
 			Log::ConsoleLog(LogType::Info, "Image has been loaded.");
 		}
+
+		m_AtlasSpriteCount = { m_TotalSize.x / r_TargetSize.x, m_TotalSize.y / r_TargetSize.y };
 	}
 
 	bool TextureObject::CreateTexture()
