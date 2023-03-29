@@ -6,6 +6,11 @@
 namespace Moon
 {
 	RenderDevice* RenderDevice::m_RenderDevice = nullptr;
+	
+	RenderDevice::RenderDevice()
+	{
+		Log::ConsoleLog(LogType::Display, "********** Render Device**********");
+	}
 
 	RenderDevice& RenderDevice::GetInstance()
 	{

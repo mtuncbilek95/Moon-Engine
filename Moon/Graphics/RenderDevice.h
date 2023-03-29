@@ -20,6 +20,7 @@ namespace Moon
 
 	public:
 		ComPtr<ID3D11DeviceContext> GetContext() { return m_Context; }
+		ComPtr<ID3D11Device> GetDevice() { return m_Device; }
 
 	protected:
 		bool CreateDeviceContext();
@@ -31,6 +32,7 @@ namespace Moon
 		bool CreateViewport(XMINT2 p_WindowSize);
 
 	private:
+		RenderDevice();
 		static RenderDevice* m_RenderDevice;
 
 	private:
