@@ -7,8 +7,11 @@ namespace Moon
 {
 	class RenderObject
 	{
+		friend class RenderDevice;
 	public:
 		RenderObject();
+
+		int GetIndexCount();
 
 	private:
 		bool CreateVertexBuffer();

@@ -8,6 +8,13 @@ namespace Moon
 	RenderObject::RenderObject()
 	{
 		Log::ConsoleLog(LogType::Display, "********** Render Object **********");
+
+		RenderDevice::GetInstance().AddRenderObject(this);
+	}
+
+	int RenderObject::GetIndexCount()
+	{
+		return m_Indices.size();
 	}
 
 	bool RenderObject::CreateVertexBuffer()
@@ -86,11 +93,11 @@ namespace Moon
 
 		if (FAILED(hr))
 		{
-			Log::ConsoleLog(LogType::Error, "Failed to create Index Buffer.");
+			Log::ConsoleLog(LogType::Error, "Failed to create Constant Buffer.");
 			return false;
 		}
 
-		Log::ConsoleLog(LogType::Success, "Index Buffer has been successfully created.");
+		Log::ConsoleLog(LogType::Success, "Constant Buffer has been successfully created.");
 
 		return true;
 	}

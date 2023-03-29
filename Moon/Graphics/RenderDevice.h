@@ -6,7 +6,7 @@
 
 namespace Moon
 {
-	typedef ComPtr<ID3D11Buffer> GeneralBuffer;
+	class RenderObject;
 
 	class RenderDevice
 	{
@@ -16,12 +16,11 @@ namespace Moon
 
 		bool Initialize(const HWND p_Handle, XMINT2 p_WindowSize);
 		void Render();
-		void Refresh();
 
 	public:
 		ComPtr<ID3D11DeviceContext> GetContext() { return m_Context; }
 		ComPtr<ID3D11Device> GetDevice() { return m_Device; }
-
+		void AddRenderObject(RenderObject* r_RenderObject);
 	protected:
 		bool CreateDeviceContext();
 		bool CreateSwapchain(const HWND p_Handle);
@@ -45,5 +44,9 @@ namespace Moon
 	private:
 		ComPtr<ID3D11PixelShader> m_PixelShader;
 		ComPtr<ID3D11VertexShader> m_VertexShader;
+
+	private:
+		std::vector<RenderObject*> m_RenderableObjects;
+		std::vector<TextureObject*> m_TextureObjects;
 	};
 }

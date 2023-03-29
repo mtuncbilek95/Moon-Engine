@@ -2,7 +2,7 @@
 
 #include <Moon/Log/Log.h>
 #include <Moon/FileSystem/FileSystem.h>
-
+#include <Moon/Assets/RenderObject.h>
 namespace Moon
 {
 	RenderDevice* RenderDevice::m_RenderDevice = nullptr;
@@ -34,13 +34,27 @@ namespace Moon
 
 	void RenderDevice::Render()
 	{
+		const float clearColor[] = { 0.084f, 0.106f, 0.122f, 1.0f };
+		m_Context->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
+
+		for (auto renderObject : m_RenderableObjects)
+		{
+			const uint32 stride = sizeof(ObjectData);
+			const uint32 offset = 0u;
+
+			m_Context->IASetVertexBuffers(0u, 1u, renderObject->m_VertexBuffer.GetAddressOf(), &stride, &offset);
+			m_Context->IASetIndexBuffer(renderObject->m_IndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
+			m_Context->VSSetConstantBuffers(0, 1u, renderObject->m_ConstantBuffer.GetAddressOf());
+
+			m_Context->DrawIndexed(renderObject->GetIndexCount(), 0u, 0u);
+		}
+
 		m_Swapchain->Present(1, 0);
 	}
 
-	void RenderDevice::Refresh()
+	void RenderDevice::AddRenderObject(RenderObject* r_RenderObject)
 	{
-		const float clearColor[] = { 0.084f, 0.106f, 0.122f, 1.0f };
-		m_Context->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
+		m_RenderableObjects.push_back(r_RenderObject);
 	}
 
 	bool RenderDevice::CreateDeviceContext()
