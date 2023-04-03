@@ -7,10 +7,10 @@
 namespace Moon
 {
 	class RenderObject;
+	class TextureObject;
 
 	class RenderDevice
 	{
-		friend class TextureObject;
 	public:
 		static RenderDevice& GetInstance();
 
@@ -20,7 +20,9 @@ namespace Moon
 	public:
 		ComPtr<ID3D11DeviceContext> GetContext() { return m_Context; }
 		ComPtr<ID3D11Device> GetDevice() { return m_Device; }
+
 		void AddRenderObject(RenderObject* r_RenderObject);
+		void AddTextureObject(TextureObject* r_TextureObject);
 	protected:
 		bool CreateDeviceContext();
 		bool CreateSwapchain(const HWND p_Handle);

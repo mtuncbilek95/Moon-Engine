@@ -17,4 +17,12 @@ namespace Moon
 		XMMATRIX ViewMatrix;
 		XMMATRIX ProjectionMatrix;
 	};
+
+	struct BaseConstantBuffer
+	{
+		XMINT2 AtlasPoint;
+		XMMATRIX WorldMatrix;
+		XMMATRIX ViewMatrix;
+		XMMATRIX ProjectionMatrix;
+	};
 }

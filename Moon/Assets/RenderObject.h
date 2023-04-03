@@ -3,6 +3,8 @@
 #include <Moon/Core/MoonCore.h>
 #include <Moon/Assets/RenderObjectDesc.h>
 
+#include "Buffer/ConstantBufferTypes.h"
+
 namespace Moon
 {
 	class RenderObject
@@ -26,5 +28,7 @@ namespace Moon
 	private:
 		std::vector<ObjectData> m_Vertices;
 		std::vector<int> m_Indices;
+
+		BaseConstantBuffer m_CBufferBlob;
 	};
 }

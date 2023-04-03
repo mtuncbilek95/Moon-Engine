@@ -87,7 +87,7 @@ namespace Moon
 		BufferDesc.StructureByteStride = 0;
 
 		D3D11_SUBRESOURCE_DATA ResourceData{};
-		ResourceData.pSysMem = &constantBuffer;
+		ResourceData.pSysMem = &m_CBufferBlob;
 
 		hr = RenderDevice::GetInstance().GetDevice()->CreateBuffer(&BufferDesc, &ResourceData, &m_ConstantBuffer);
 

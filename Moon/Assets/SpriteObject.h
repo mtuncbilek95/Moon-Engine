@@ -4,21 +4,24 @@
 #include <Moon/EntityComponent/EntityCore.h>
 
 #include <Moon/Assets/TextureObject.h>
-#include <Moon/Assets/SpriteObjectData.h>
 
 namespace Moon
 {
 	class SpriteObject
 	{
+	public:
+		/**
+		 * @brief Constructor for Sprite
+		 * @param r_TexturePoint Vector location of the desired sprite.
+		 * @param r_TextureObject Related Texture Object.
+		*/
 		SpriteObject(XMINT2 r_TexturePoint, TextureObject* r_TextureObject)
 		{
-			r_TextureObject->m_AtlasSpriteCount;
+			m_TextureObject = r_TextureObject;
+			m_TexturePoint = r_TexturePoint;
 		}
-
 	private:
-		ComPtr<ID3D11Buffer> m_VertexBuffer;
-		ComPtr<ID3D11Buffer> m_IndexBuffer;
-
-
+		TextureObject* m_TextureObject;
+		XMINT2 m_TexturePoint;
 	};
 }

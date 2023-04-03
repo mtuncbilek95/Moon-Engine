@@ -57,6 +57,11 @@ namespace Moon
 		m_RenderableObjects.push_back(r_RenderObject);
 	}
 
+	void RenderDevice::AddTextureObject(TextureObject* r_TextureObject)
+	{
+		m_TextureObjects.push_back(r_TextureObject);
+	}
+
 	bool RenderDevice::CreateDeviceContext()
 	{
 		HRESULT hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,

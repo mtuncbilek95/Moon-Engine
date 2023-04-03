@@ -10,6 +10,7 @@ namespace Moon
 {
 	TextureObject::TextureObject()
 	{
+		RenderDevice::GetInstance().AddTextureObject(this);
 	}
 
 	TextureObject::~TextureObject()
@@ -53,7 +54,7 @@ namespace Moon
 		TextureResourceData.pSysMem = m_ImageData;
 		TextureResourceData.SysMemPitch = imagePitch;
 
-		HRESULT hr = RenderDevice::GetInstance().m_Device->CreateTexture2D(&m_TextureBufferDesc, &TextureResourceData, &m_TextureBuffer);
+		HRESULT hr = RenderDevice::GetInstance().GetDevice()->CreateTexture2D(&m_TextureBufferDesc, &TextureResourceData, &m_TextureBuffer);
 
 		if (FAILED(hr))
 		{
@@ -72,7 +73,7 @@ namespace Moon
 		m_ShaderResourceDesc.Texture2D.MostDetailedMip = 0;
 		m_ShaderResourceDesc.Texture2D.MipLevels = -1;
 
-		HRESULT hr = RenderDevice::GetInstance().m_Device->CreateShaderResourceView(m_TextureBuffer.Get(), &m_ShaderResourceDesc, &m_ShaderResourceView);
+		HRESULT hr = RenderDevice::GetInstance().GetDevice()->CreateShaderResourceView(m_TextureBuffer.Get(), &m_ShaderResourceDesc, &m_ShaderResourceView);
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, " Failed to create Shader Resource View.");
@@ -102,7 +103,7 @@ namespace Moon
 		SamplerDesc.MinLOD = 0;
 		SamplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 		
-		HRESULT hr = RenderDevice::GetInstance().m_Device->CreateSamplerState(&SamplerDesc, &m_SamplerState);
+		HRESULT hr = RenderDevice::GetInstance().GetDevice()->CreateSamplerState(&SamplerDesc, &m_SamplerState);
 
 		if (FAILED(hr))
 		{
@@ -133,7 +134,7 @@ namespace Moon
 		blendDesc.IndependentBlendEnable = true;
 		blendDesc.AlphaToCoverageEnable = false;
 
-		HRESULT hr = RenderDevice::GetInstance().m_Device->CreateBlendState(&blendDesc, &m_BlendState);
+		HRESULT hr = RenderDevice::GetInstance().GetDevice()->CreateBlendState(&blendDesc, &m_BlendState);
 
 		if (FAILED(hr))
 		{
