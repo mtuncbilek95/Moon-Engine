@@ -23,6 +23,7 @@ namespace Moon
 
 		void AddRenderObject(RenderObject* r_RenderObject);
 		void AddTextureObject(TextureObject* r_TextureObject);
+
 	protected:
 		bool CreateDeviceContext();
 		bool CreateSwapchain(const HWND p_Handle);
