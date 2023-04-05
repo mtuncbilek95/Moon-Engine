@@ -9,5 +9,6 @@ int main()
 
 	App->StartApplication();
 	App->LoopApplication();
+
 	return 0;
 }
