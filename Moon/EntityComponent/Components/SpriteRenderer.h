@@ -7,8 +7,6 @@
 #include <Moon/Assets/ConstantBufferTypes.h>
 #include <Moon/Assets/SpriteObject.h>
 
-#include <Moon/Graphics/RenderDevice.h>
-
 namespace Moon
 {
 	class SpriteRenderer : public Component

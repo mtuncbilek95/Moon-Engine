@@ -1,71 +1,19 @@
-#include "RenderDevice.h"
+#include "RenderModule.h"
 
 #include <Moon/Log/Log.h>
+#include <Moon/DXDevice/DXManager.h>
 #include <Moon/FileSystem/FileSystem.h>
-#include <Moon/Assets/RenderObject.h>
+
 namespace Moon
 {
-	RenderDevice* RenderDevice::m_RenderDevice = nullptr;
-	
-	RenderDevice::RenderDevice()
+	RenderModule::RenderModule()
 	{
-		Log::ConsoleLog(LogType::Display, "********** Render Device**********");
 	}
 
-	RenderDevice& RenderDevice::GetInstance()
+	bool RenderModule::CreateDeviceContext()
 	{
-		if (m_RenderDevice == nullptr)
-			m_RenderDevice = new RenderDevice();
-		return *m_RenderDevice;
-	}
-
-	bool RenderDevice::Initialize(const HWND p_Handle, XMINT2 p_WindowSize)
-	{
-		if (!CreateDeviceContext())
-			return false;
-		if (!CreateSwapchain(p_Handle))
-			return false;
-		if (!CreateRenderTargetView())
-			return false;
-		if (!CreateViewport(p_WindowSize))
-			return false;
-		return true;
-	}
-
-	void RenderDevice::Render()
-	{
-		const float clearColor[] = { 0.084f, 0.106f, 0.122f, 1.0f };
-		m_Context->ClearRenderTargetView(m_RenderTargetView.Get(), clearColor);
-
-		for (auto renderObject : m_RenderableObjects)
-		{
-			const uint32 stride = sizeof(ObjectData);
-			const uint32 offset = 0u;
-
-			m_Context->IASetVertexBuffers(0u, 1u, renderObject->m_VertexBuffer.GetAddressOf(), &stride, &offset);
-			m_Context->IASetIndexBuffer(renderObject->m_IndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-			m_Context->VSSetConstantBuffers(0, 1u, renderObject->m_ConstantBuffer.GetAddressOf());
-
-			m_Context->DrawIndexed(renderObject->GetIndexCount(), 0u, 0u);
-		}
-
-		m_Swapchain->Present(1, 0);
-	}
-
-	void RenderDevice::AddRenderObject(RenderObject* r_RenderObject)
-	{
-		m_RenderableObjects.push_back(r_RenderObject);
-	}
-
-	void RenderDevice::AddTextureObject(TextureObject* r_TextureObject)
-	{
-		m_TextureObjects.push_back(r_TextureObject);
-	}
-
-	bool RenderDevice::CreateDeviceContext()
-	{
-		HRESULT hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
-			D3D11_SDK_VERSION, m_Device.GetAddressOf(), nullptr, m_Context.GetAddressOf());
+		HRESULT hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION,
+			DXManager::GetInstance().GetDevice().GetAddressOf(), nullptr, DXManager::GetInstance().GetContext().GetAddressOf());
 
 		if (FAILED(hr))
 		{
@@ -73,12 +21,11 @@ namespace Moon
 			return false;
 		}
 
-		Log::ConsoleLog(LogType::Error, "D3D11 Device has been successfully created.");
+		Log::ConsoleLog(LogType::Success, "D3D11 Device has been successfully created.");
 
 		return true;
 	}
-
-	bool RenderDevice::CreateSwapchain(const HWND p_Handle)
+	bool RenderModule::CreateSwapchain(const HWND p_Handle)
 	{
 		HRESULT hr;
 		DXGI_SWAP_CHAIN_DESC swapChainDesc{};
@@ -111,7 +58,7 @@ namespace Moon
 		swapChainDesc.Flags = 0;
 
 		ComPtr<IDXGIDevice> dxgiDevice;
-		hr = m_Device.As(&dxgiDevice);
+		hr = DXManager::GetInstance().GetDevice().As(&dxgiDevice);
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, "Failed to get the DXGI Device.");
@@ -127,14 +74,14 @@ namespace Moon
 		}
 
 		ComPtr<IDXGIFactory> dxgiFactory;
-		hr = dxgiAdapter.Get()->GetParent(IID_PPV_ARGS(dxgiAdapter.GetAddressOf()));
+		hr = dxgiAdapter.Get()->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf()));
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, "Failed to get the DXGI Factory.");
 			return false;
 		}
 
-		hr = dxgiFactory->CreateSwapChain(m_Device.Get(), &swapChainDesc, &m_Swapchain);
+		hr = dxgiFactory->CreateSwapChain(DXManager::GetInstance().GetDevice().Get(), &swapChainDesc, &DXManager::GetInstance().GetSwapchain());
 
 		if (FAILED(hr))
 		{
@@ -146,47 +93,46 @@ namespace Moon
 
 		return true;
 	}
-
-	bool RenderDevice::CreateRenderTargetView()
+	bool RenderModule::CreateRenderTargetView()
 	{
 		ComPtr<ID3D11Texture2D> backBuffer;
 		D3D11_RENDER_TARGET_VIEW_DESC targetViewDesc{};
 		HRESULT hr;
 
-		hr = m_Swapchain->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf()));
+		hr = DXManager::GetInstance().GetSwapchain()->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf()));
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, "Failed to get the Backbuffer.");
 			return false;
 		}
 
-		hr = m_Device->CreateRenderTargetView(backBuffer.Get(), nullptr, &m_RenderTargetView);
+		hr = DXManager::GetInstance().GetDevice()->CreateRenderTargetView(backBuffer.Get(), nullptr, &DXManager::GetInstance().GetRenderTargetView());
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, "Failed to create Render Target View.");
 			return false;
 		}
 
-		m_Context->OMSetRenderTargets(1u, m_RenderTargetView.GetAddressOf(), nullptr);
+		DXManager::GetInstance().GetContext()->OMSetRenderTargets(1u, DXManager::GetInstance().GetRenderTargetView().GetAddressOf(), nullptr);
 
 		Log::ConsoleLog(LogType::Success, "Render Target View has been successfully created.");
 
 		return true;
 	}
-
-	bool RenderDevice::CreatePixelShader(ComPtr<ID3DBlob>& Blob)
+	bool RenderModule::CreatePixelShader(ComPtr<ID3DBlob>& p_Blob)
 	{
 		ComPtr<ID3DBlob> ErrorBlob;
 
 		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders/PixelShader.hlsl");
 
-		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &Blob, &ErrorBlob);
+		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 
+			0, &p_Blob, &ErrorBlob);
 		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
 		{
 			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
 		}
 
-		HRESULT hr = m_Device->CreatePixelShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &m_PixelShader);
+		HRESULT hr = DXManager::GetInstance().GetDevice()->CreatePixelShader(p_Blob->GetBufferPointer(), p_Blob->GetBufferSize(), nullptr, &m_PixelShader);
 
 		if (FAILED(hr))
 		{
@@ -194,24 +140,25 @@ namespace Moon
 			return false;
 		}
 
-		m_Context->PSSetShader(m_PixelShader.Get(), nullptr, 0u);
+		DXManager::GetInstance().GetContext()->PSSetShader(m_PixelShader.Get(), nullptr, 0u);
 		Log::ConsoleLog(LogType::Success, "Pixel Shader has been successfully created.");
 		return true;
 	}
-
-	bool RenderDevice::CreateVertexShader(ComPtr<ID3DBlob>& Blob)
+	bool RenderModule::CreateVertexShader(ComPtr<ID3DBlob>& p_Blob)
 	{
 		ComPtr<ID3DBlob> ErrorBlob;
 
 		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders/VertexShader.hlsl");
 
-		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &Blob, &ErrorBlob);
+		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS,
+			0, &p_Blob, &ErrorBlob);
 		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
 		{
 			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
 		}
 
-		HRESULT hr = m_Device->CreateVertexShader(Blob->GetBufferPointer(), Blob->GetBufferSize(), nullptr, &m_VertexShader);
+		HRESULT hr = DXManager::GetInstance().GetDevice()->CreateVertexShader(p_Blob->GetBufferPointer(),
+			p_Blob->GetBufferSize(), nullptr, &m_VertexShader);
 
 		if (FAILED(hr))
 		{
@@ -219,14 +166,11 @@ namespace Moon
 			return false;
 		}
 
-		m_Context->VSSetShader(m_VertexShader.Get(), nullptr, 0u);
+		DXManager::GetInstance().GetContext()->VSSetShader(m_VertexShader.Get(), nullptr, 0u);
 		Log::ConsoleLog(LogType::Success, "Pixel Shader has been successfully created.");
 		return true;
-
-		return false;
 	}
-
-	bool RenderDevice::CreateInputLayout(ComPtr<ID3DBlob>& Blob)
+	bool RenderModule::CreateInputLayout(ComPtr<ID3DBlob>& p_Blob)
 	{
 		HRESULT hr;
 
@@ -235,20 +179,20 @@ namespace Moon
 			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 
-		hr = m_Device->CreateInputLayout(inputElementDesc, static_cast<uint32>(std::size(inputElementDesc)), Blob->GetBufferPointer(), Blob->GetBufferSize(), &m_InputLayout);
+		hr = DXManager::GetInstance().GetDevice()->CreateInputLayout(inputElementDesc, static_cast<uint32>(std::size(inputElementDesc)),
+			p_Blob->GetBufferPointer(), p_Blob->GetBufferSize(), &DXManager::GetInstance().GetInputLayout());
 		if (FAILED(hr))
 		{
 			Log::ConsoleLog(LogType::Error, "Failed to create Input Layout");
 			return false;
 		}
 
-		m_Context->IASetInputLayout(m_InputLayout.Get());
+		DXManager::GetInstance().GetContext()->IASetInputLayout(DXManager::GetInstance().GetInputLayout().Get());
 
 		Log::ConsoleLog(LogType::Success, "Input Layout has been successfully created.");
 		return true;
 	}
-
-	bool RenderDevice::CreateViewport(XMINT2 p_WindowSize)
+	bool RenderModule::CreateViewport(XMINT2 p_WindowSize)
 	{
 		D3D11_VIEWPORT m_Viewport{};
 
@@ -265,7 +209,7 @@ namespace Moon
 		m_Viewport.TopLeftX = 0;
 		m_Viewport.TopLeftY = 0;
 
-		m_Context->RSSetViewports(1u, &m_Viewport);
+		DXManager::GetInstance().GetContext()->RSSetViewports(1u, &m_Viewport);
 
 		Log::ConsoleLog(LogType::Info, "Viewport has been set.");
 

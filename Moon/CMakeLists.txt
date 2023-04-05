@@ -8,8 +8,7 @@ endif()
 
 set(RESOURCE "${CMAKE_SOURCE_DIR}/Moon/Resources/Engine.rc")
 
-add_library (${PROJECT_NAME} "main.cpp" 
-"Graphics/RenderDevice.h" "Graphics/RenderDevice.cpp"
+add_library (${PROJECT_NAME}
 "Graphics/RenderCore.h" 
 "Core/MoonCore.h" 
 "Log/Log.h"  
@@ -27,7 +26,16 @@ add_library (${PROJECT_NAME} "main.cpp"
 "EntityComponent/Components/SpriteRenderer.h" 
 "EntityComponent/Components/BoxCollision2D.h" 
 "EntityComponent/Component.h" 
-"Assets/AnimationClipObject.h" "Assets/RenderObjectDesc.h" "Assets/RenderObject.h" "Assets/RenderObject.cpp")
+"Assets/AnimationClipObject.h" 
+"Assets/RenderObjectDesc.h" 
+"Assets/RenderObject.h" "Assets/RenderObject.cpp" 
+"DXDevice/DXModule.h" "DXDevice/DXModule.cpp" 
+"DXDevice/DXManager.h" "DXDevice/DXManager.cpp" 
+"Graphics/RenderManager.h" "Graphics/RenderManager.cpp" 
+"Graphics/RenderModule.h" "Graphics/RenderModule.cpp" 
+"Application/ApplicationModule.h" "Application/ApplicationModule.cpp" 
+"EntityComponent/EntityManager.h" 
+"World/SceneModule.h" "World/SceneModule.cpp" "World/SceneManager.h" "World/SceneManager.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}")
 

@@ -2,3 +2,4 @@
 
 add_subdirectory ("Libs/Stbi")
 add_subdirectory ("Moon")
+add_subdirectory ("GameProject")
