@@ -7,7 +7,7 @@
 
 int main()
 {
-	Moon::FileSystem::GetInstance().SetProjectTarget("D:\\Moon-Engine\\");
+	Moon::FileSystem::GetInstance().SetProjectTarget("D:\\Projects\\Moon-Engine\\");
 
 	Moon::SceneManager::GetInstance().AddNewScene(new BlankScene());
 

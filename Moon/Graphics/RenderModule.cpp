@@ -123,13 +123,14 @@ namespace Moon
 	{
 		ComPtr<ID3DBlob> ErrorBlob;
 
-		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders/PixelShader.hlsl");
+		const string ShaderBlob = FileSystem::GetInstance().GetData("Shaders\\PixelShader.hlsl");
 
-		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 
+		D3DCompile(ShaderBlob.c_str(), ShaderBlob.length(), nullptr, nullptr, nullptr, "main", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 
 			0, &p_Blob, &ErrorBlob);
+
 		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
 		{
-			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
+			Log::ConsoleLog(LogType::Error, (char*)ErrorBlob->GetBufferPointer());
 		}
 
 		HRESULT hr = DXManager::GetInstance().GetDevice()->CreatePixelShader(p_Blob->GetBufferPointer(), p_Blob->GetBufferSize(), nullptr, &m_PixelShader);
@@ -154,7 +155,7 @@ namespace Moon
 			0, &p_Blob, &ErrorBlob);
 		if (ErrorBlob.Get() != nullptr && ErrorBlob.Get()->GetBufferPointer() != nullptr)
 		{
-			Log::ConsoleLog(LogType::Warning, ErrorBlob->GetBufferPointer());
+			Log::ConsoleLog(LogType::Error, ErrorBlob->GetBufferPointer());
 		}
 
 		HRESULT hr = DXManager::GetInstance().GetDevice()->CreateVertexShader(p_Blob->GetBufferPointer(),

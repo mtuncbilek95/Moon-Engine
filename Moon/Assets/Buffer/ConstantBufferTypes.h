@@ -20,7 +20,7 @@ namespace Moon
 
 	struct BaseConstantBuffer
 	{
-		XMINT2 AtlasPoint;
+		XMFLOAT2 AtlasPoint;
 		XMMATRIX WorldMatrix;
 		XMMATRIX ViewMatrix;
 		XMMATRIX ProjectionMatrix;

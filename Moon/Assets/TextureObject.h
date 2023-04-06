@@ -11,8 +11,11 @@ namespace Moon
 	public:
 		TextureObject();
 		~TextureObject();
+
+		XMINT2 GetSpriteCount();
+
 	protected:
-		void LoadTextureImage(string r_PathName, XMINT2 r_TargetSize);
+		virtual void LoadTextureImage(string r_PathName, XMINT2 r_TargetSize);
 
 		bool CreateTexture();
 		bool CreateShaderResourceView();

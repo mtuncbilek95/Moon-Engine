@@ -3,24 +3,39 @@
 #include <Moon/Core/MoonCore.h>
 #include <Moon/EntityComponent/Component.h>
 #include <Moon/EntityComponent/EntityCore.h>
+#include <Moon/Assets/RenderObject.h>
 
 namespace Moon
 {
 	class Entity
 	{
+		friend class Component;
 	public:
 		Entity()
 		{
+			m_RenderObject = new RenderObject();
+
 			for (auto& el : m_ComponentList)
 			{
 				el = nullptr;
 			}
-		}
-		virtual ~Entity() {}
 
-		virtual void Begin() {}
-		virtual void Loop(float r_DeltaTime) {}
-		virtual void Finish() {}
+			//m_RenderObject->CreateVertexBuffer();
+			//m_RenderObject->CreateIndexBuffer();
+			//m_RenderObject->CreateConstantBuffer();
+		}
+
+		virtual void Begin()
+		{
+		}
+		virtual void Loop(float r_DeltaTime)
+		{
+			for (auto& component : m_Components)
+				component->Update();
+		}
+		virtual void Finish()
+		{
+		}
 
 	public:
 		template<typename T, typename... TArgs>
@@ -65,11 +80,19 @@ namespace Moon
 			return m_ComponentBitset.any();
 		}
 
+		RenderObject* GetRenderObject()
+		{
+			return m_RenderObject;
+		}
+
 	private:
 		std::vector<Component*> m_Components;
 
 	private:
 		std::bitset<32> m_ComponentBitset;
 		std::array<Component*, 32> m_ComponentList{};
+
+	private:
+		RenderObject* m_RenderObject;
 	};
 }

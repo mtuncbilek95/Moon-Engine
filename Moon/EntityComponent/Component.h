@@ -10,7 +10,7 @@ namespace Moon
 	class Component
 	{
 	public:
-		Component() = default;
+		Component() : m_Entity(nullptr) {}
 
 		virtual bool Initialize() { return true; }
 		virtual void Update() {}

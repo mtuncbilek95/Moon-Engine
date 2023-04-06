@@ -34,12 +34,12 @@ namespace Moon
 			return false;
 		if (!GetInstance().CreateViewport(p_WindowSize))
 			return false;
-		//if (!GetInstance().CreatePixelShader(shaderBlob))
-		//	return false;
-		//if (!GetInstance().CreateVertexShader(shaderBlob))
-		//	return false;
-		//if (!GetInstance().CreateInputLayout(shaderBlob))
-		//	return false;
+		if (!GetInstance().CreatePixelShader(shaderBlob))
+			return false;
+		if (!GetInstance().CreateVertexShader(shaderBlob))
+			return false;
+		if (!GetInstance().CreateInputLayout(shaderBlob))
+			return false;
 
 		return true;
 	}
@@ -51,7 +51,7 @@ namespace Moon
 
 		for (auto& object : m_RenderObjects)
 		{
-			//DXManager::GetInstance().GetContext()->DrawIndexed(object->GetIndexCount(), 0u, 0u);
+			DXManager::GetInstance().GetContext()->DrawIndexed(object->GetIndexCount(), 0u, 0u);
 		}
 
 		DXManager::GetInstance().GetSwapchain()->Present(1, 0);

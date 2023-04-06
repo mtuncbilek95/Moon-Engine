@@ -3,19 +3,29 @@
 #include <Moon/Core/MoonCore.h>
 #include <Moon/Assets/RenderObjectDesc.h>
 
-#include "Buffer/ConstantBufferTypes.h"
+#include <Moon/Assets/Buffer/ConstantBufferTypes.h>
 
 namespace Moon
 {
+
+	enum class BufferType
+	{
+		VertexBuffer,
+		IndexBuffer,
+		ConstantBuffer
+	};
+
 	class RenderObject
 	{
-		friend class RenderDevice;
 	public:
 		RenderObject();
 
 		int GetIndexCount();
 
-	private:
+		BaseConstantBuffer& GetConstantBlob();
+
+		ComPtr<ID3D11Buffer>& GetBuffer(BufferType p_BufferType);
+
 		bool CreateVertexBuffer();
 		bool CreateIndexBuffer();
 		bool CreateConstantBuffer();

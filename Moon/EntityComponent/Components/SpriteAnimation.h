@@ -37,17 +37,15 @@ namespace Moon
 
 		void Play(string clipName)
 		{
-			auto& element = m_AnimClips.find(clipName);
-			AnimationClipObject* clip = element.second;
-
-			for (auto& el : clip->m_Sprites)
-			{
-
-			}
-
+			//auto& element = m_AnimClips.find(clipName);
+			//AnimationClipObject* clip = element.second;
+			
 		}
 
 	private:
 		std::unordered_map<string, AnimationClipObject*> m_AnimClips;
+
+		int m_CurrentStep;
+		int m_StackedDelta;
 	};
 }

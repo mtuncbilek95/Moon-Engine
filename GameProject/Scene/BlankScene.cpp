@@ -2,10 +2,16 @@
 
 #include <Moon/EntityComponent/EntityManager.h>
 
+#include <Characters/King.h>
+
 BlankScene::BlankScene() : SceneObject()
 {
 	m_SceneName = "Blank Scene";
 	m_EntityManager = new Moon::EntityManager();
+
+	King* playerKing = new King();
+
+	m_EntityManager->AddEntity(playerKing);
 }
 
 void BlankScene::Begin()
