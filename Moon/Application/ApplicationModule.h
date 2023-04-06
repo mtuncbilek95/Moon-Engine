@@ -5,6 +5,10 @@
 
 namespace Moon
 {
+	class Window;
+	class RenderManager;
+	class SceneManager;
+
 	class ApplicationModule
 	{
 	public:

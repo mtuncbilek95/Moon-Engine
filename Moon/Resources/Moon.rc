@@ -23,7 +23,7 @@ BEGIN
     "\0"
 END
 #endif    // APSTUDIO_INVOKED
-IDI_APPICON               ICON                    "Resources\\MoonIcon.ico"
+IDI_APPICON               ICON                    "Moon\\Resources\\MoonIcon.ico"
 
 #endif    // English (United States) resources
 #ifndef APSTUDIO_INVOKED

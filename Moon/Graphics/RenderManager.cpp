@@ -1,8 +1,8 @@
 #include "RenderManager.h"
 
+#include <Moon/Graphics/RenderCore.h>
 
 #include <Moon/Log/Log.h>
-
 #include <Moon/Graphics/RenderModule.h>
 #include <Moon/DXDevice/DXManager.h>
 #include <Moon/Assets/RenderObject.h>
@@ -13,8 +13,6 @@ namespace Moon
 
 	RenderManager::RenderManager()
 	{
-		Log::ConsoleLog(LogType::Display, "********** Render Manager**********");
-
 		if (!m_RenderModule)
 			m_RenderModule = new RenderModule();
 	}
@@ -43,7 +41,6 @@ namespace Moon
 		//if (!GetInstance().CreateInputLayout(shaderBlob))
 		//	return false;
 
-		Log::ConsoleLog(LogType::Success, "Render Manager has been initialized.");
 		return true;
 	}
 

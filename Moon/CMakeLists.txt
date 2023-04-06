@@ -6,8 +6,6 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
 	add_compile_definitions(MOON_DEBUG)
 endif()
 
-set(RESOURCE "${CMAKE_SOURCE_DIR}/Moon/Resources/Engine.rc")
-
 add_library (${PROJECT_NAME}
 "Graphics/RenderCore.h" 
 "Core/MoonCore.h" 
@@ -35,7 +33,9 @@ add_library (${PROJECT_NAME}
 "Graphics/RenderModule.h" "Graphics/RenderModule.cpp" 
 "Application/ApplicationModule.h" "Application/ApplicationModule.cpp" 
 "EntityComponent/EntityManager.h" 
-"World/SceneModule.h" "World/SceneModule.cpp" "World/SceneManager.h" "World/SceneManager.cpp")
+"World/SceneModule.h" "World/SceneModule.cpp" 
+"World/SceneManager.h" "World/SceneManager.cpp" 
+"World/SceneObject.h" "World/SceneObject.cpp")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}")
 

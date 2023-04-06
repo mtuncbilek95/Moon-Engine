@@ -13,8 +13,8 @@ namespace Moon
 
 #define Moon_Success		"\033[0;32m[Success] -- "
 #define Moon_Warning		"\033[0;33m[Warning] -- "
-#define Moon_Error			"\033[0;31m[Error] -- "
-#define Moon_Info			"\033[0;36m[Info] -- "
+#define Moon_Error			"\033[0;31m[Error]   -- "
+#define Moon_Info			"\033[0;36m[Info]    -- "
 #define Moon_Display		"\033[0;37m[Display] -- "
 
 	enum class LogType : byte

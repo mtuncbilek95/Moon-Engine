@@ -6,9 +6,8 @@
 namespace Moon
 {
 	Window::Window(int width, int height) : m_WindowSize({ width,height }), m_HandleInstance(GetModuleHandle(nullptr)), m_WindowHandle(nullptr),
-		b_IsRunning(false), m_ClassName("WindowClass"), m_WindowName("Kings and Pigs")
+		b_IsRunning(false), m_ClassName("WindowClass"), m_WindowName("Moon Engine")
 	{
-		Log::ConsoleLog(LogType::Display, "********** Window Device **********");
 	}
 
 	Window::~Window()
