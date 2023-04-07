@@ -1,6 +1,6 @@
 # Moon-Engine
 
-```cpp
+```hlsl
 float2 CalculateUV(float2 uv, float2 dimensions, int index)
 {
 	float2 spriteSize = { 1.0f / dimensions.x, 1.0f / dimensions.y };
